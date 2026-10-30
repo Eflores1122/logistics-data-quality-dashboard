@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rutanorte-dq"
+version = "1.0.0"
+description = "Reference data-quality framework for a fictitious Mexican parcel network. Synthetic data only."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Edgar Flores" }]
+keywords = ["data-quality", "duckdb", "synthetic-data"]
+dependencies = [
+  "duckdb>=1.1",
+  "pyyaml>=6",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dashboard = [
+  "streamlit>=1.39",
+  "plotly>=5.24",
+  "pandas>=2.2",
+]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+]
+
+[project.scripts]
+rutanorte-dq = "rutanorte_dq.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "dashboard"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+# The formatter owns wrapping. It intentionally leaves some long strings intact.
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

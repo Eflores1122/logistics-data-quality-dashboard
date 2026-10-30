@@ -1,0 +1,342 @@
+suite: rutanorte_daily
+description: >
+  Daily data-quality suite for the fictitious RutaNorte Paqueteria network.
+  RutaNorte is not a real company. Every row this suite reads is synthetic.
+as_of: 2026-10-15
+sla:
+  pass_score: 95.0
+  fail_on_critical: true
+severity_weights:
+  critical: 5
+  high: 3
+  medium: 2
+  low: 1
+
+nodes:
+  - id: raw_customer_signups
+    label: Raw customer signups
+    layer: extract
+  - id: raw_scan_events
+    label: Raw tracking scans
+    layer: extract
+  - id: raw_hub_registry
+    label: Raw hub registry
+    layer: extract
+  - id: raw_shipment_events
+    label: Raw shipment events
+    layer: extract
+  - id: customers
+    label: customers
+    layer: warehouse
+  - id: tracking_scans
+    label: tracking_scans
+    layer: warehouse
+  - id: hubs
+    label: hubs
+    layer: warehouse
+  - id: shipments
+    label: shipments
+    layer: warehouse
+  - id: daily_route_kpis
+    label: daily_route_kpis
+    layer: mart
+
+lineage:
+  - from: raw_customer_signups
+    to: customers
+  - from: raw_scan_events
+    to: tracking_scans
+  - from: raw_hub_registry
+    to: hubs
+  - from: raw_shipment_events
+    to: shipments
+  - from: customers
+    to: tracking_scans
+  - from: customers
+    to: shipments
+  - from: hubs
+    to: shipments
+  - from: shipments
+    to: daily_route_kpis
+
+tables:
+  - name: customers
+    business_date_column: created_date
+    key: customer_id
+    checks:
+      - id: customers_customer_id_unique
+        type: uniqueness
+        columns: [customer_id]
+        severity: critical
+        description: A customer id is the grain of a signup partition.
+      - id: customers_email_completeness
+        type: completeness
+        column: email
+        max_null_rate: 0.0
+        severity: high
+        description: Email is required on every new customer.
+      - id: customers_email_validity
+        type: validity
+        column: email
+        format: email
+        max_invalid_rate: 0.0
+        severity: high
+        description: Non-blank emails must look like an email address.
+      - id: customers_phone_completeness
+        type: completeness
+        column: phone
+        max_null_rate: 0.0
+        severity: medium
+        description: Phone is required on every new customer.
+      - id: customers_phone_validity
+        type: validity
+        column: phone
+        format: phone_mx
+        max_invalid_rate: 0.0
+        severity: medium
+        description: Phones use the +52 and 10-digit Mexican format.
+      - id: customers_rfc_validity
+        type: validity
+        column: rfc
+        format: rfc_fisica
+        max_invalid_rate: 0.0
+        severity: high
+        description: Persona fisica RFC shape, including a real calendar date. Not a SAT checksum.
+      - id: customers_curp_validity
+        type: validity
+        column: curp
+        format: curp
+        max_invalid_rate: 0.0
+        severity: high
+        description: CURP shape, including sex, state, and a real calendar date. Not a RENAPO checksum.
+      - id: customers_segment_values
+        type: accepted_values
+        column: segment
+        values: [residential, commercial]
+        severity: low
+        description: Segment is residential or commercial delivery.
+      - id: customers_status_values
+        type: accepted_values
+        column: status
+        values: [active, inactive]
+        severity: low
+        description: Customer status is active or inactive.
+      - id: customers_freshness
+        type: freshness
+        timestamp_column: loaded_at
+        deadline_hours: 32
+        severity: critical
+        description: Signup partitions are due by 08:00 the next morning.
+      - id: customers_volume_anomaly
+        type: volume_anomaly
+        window_days: 14
+        max_deviation_pct: 0.35
+        severity: medium
+        description: Daily signups stay within 35% of the trailing 14-day median.
+      - id: customers_segment_drift
+        type: distribution_drift
+        column: segment
+        threshold: 0.20
+        window_days: 14
+        severity: medium
+        description: Segment mix is compared with the first 14 business dates.
+
+  - name: tracking_scans
+    business_date_column: business_date
+    key: scan_id
+    checks:
+      - id: scans_scan_id_unique
+        type: uniqueness
+        columns: [scan_id]
+        severity: critical
+        description: A tracking-scan id is unique inside the business date.
+      - id: scans_customer_completeness
+        type: completeness
+        column: customer_id
+        max_null_rate: 0.0
+        severity: high
+        description: Every scan names a customer.
+      - id: scans_barcode_completeness
+        type: completeness
+        column: barcode
+        max_null_rate: 0.0
+        severity: medium
+        description: Every scan has a barcode.
+      - id: scans_customer_fk
+        type: referential_integrity
+        column: customer_id
+        references:
+          table: customers
+          column: customer_id
+        severity: critical
+        description: Scan customer ids exist on the customer table.
+      - id: scans_event_values
+        type: accepted_values
+        column: scan_event
+        values: [pickup, hub_in, out_for_delivery]
+        severity: medium
+        description: Scan event is pickup, hub_in, or out_for_delivery.
+      - id: scans_freshness
+        type: freshness
+        timestamp_column: loaded_at
+        deadline_hours: 32
+        severity: critical
+        description: Tracking-scan partitions are due by 08:00 the next morning.
+      - id: scans_volume_anomaly
+        type: volume_anomaly
+        window_days: 14
+        max_deviation_pct: 0.35
+        severity: medium
+        description: Daily scan volume stays within 35% of the trailing median.
+
+  - name: shipments
+    business_date_column: business_date
+    key: shipment_id
+    checks:
+      - id: shipments_shipment_id_unique
+        type: uniqueness
+        columns: [shipment_id]
+        severity: critical
+        description: A shipment id is unique inside the business date.
+      - id: shipments_weight_completeness
+        type: completeness
+        column: weight_g
+        max_null_rate: 0.0
+        severity: high
+        description: Every shipment has a weight in grams.
+      - id: shipments_customer_fk
+        type: referential_integrity
+        column: customer_id
+        references:
+          table: customers
+          column: customer_id
+        severity: critical
+        description: Shipments reference a known customer.
+      - id: shipments_hub_fk
+        type: referential_integrity
+        column: hub_id
+        references:
+          table: hubs
+          column: hub_id
+        severity: critical
+        description: Shipments reference a registered hub.
+      - id: shipments_channel_values
+        type: accepted_values
+        column: channel
+        values: [home, branch, locker, counter]
+        severity: low
+        description: Channel is home, branch, locker, or counter.
+      - id: shipments_status_values
+        type: accepted_values
+        column: status
+        values: [delivered, in_transit, returned, exception]
+        severity: low
+        description: Shipment status is one of the four route states.
+      - id: shipments_country_values
+        type: accepted_values
+        column: country_code
+        values: [MX]
+        severity: low
+        description: This network originates shipments in MX.
+      - id: shipments_freshness
+        type: freshness
+        timestamp_column: loaded_at
+        deadline_hours: 32
+        severity: critical
+        description: Shipment partitions are due by 08:00 the next morning.
+      - id: shipments_volume_anomaly
+        type: volume_anomaly
+        window_days: 14
+        max_deviation_pct: 0.35
+        severity: high
+        description: Daily shipment counts stay within 35% of the trailing 14-day median.
+      - id: shipments_channel_drift
+        type: distribution_drift
+        column: channel
+        threshold: 0.20
+        window_days: 14
+        severity: medium
+        description: Channel mix is compared with the first 14 business dates (PSI).
+      - id: shipments_weight_drift
+        type: distribution_drift
+        column: weight_g
+        numeric: true
+        bins: 5
+        threshold: 0.25
+        window_days: 14
+        severity: medium
+        description: Weight shape is compared with the calibration window (PSI on quantile bins).
+
+  - name: daily_route_kpis
+    business_date_column: business_date
+    key: business_date
+    checks:
+      - id: kpis_business_date_unique
+        type: uniqueness
+        columns: [business_date]
+        scope: table
+        severity: critical
+        description: The mart publishes one row per business date.
+      - id: kpis_shipment_count_completeness
+        type: completeness
+        column: shipment_count
+        max_null_rate: 0.0
+        severity: high
+        description: Published shipment counts are populated.
+      - id: kpis_weight_completeness
+        type: completeness
+        column: weight_g
+        max_null_rate: 0.0
+        severity: high
+        description: Published weights are populated.
+      - id: kpis_golden_reconciliation
+        type: golden_reconciliation
+        severity: critical
+        golden_path: data/golden/shipment_daily_totals.csv
+        description: Published daily totals match the operations golden file.
+        metrics:
+          - name: shipment_count
+            expression: sum(shipment_count)
+            tolerance_abs: 0
+          - name: weight_g_sum
+            expression: sum(weight_g)
+            tolerance_abs: 0.01
+      - id: kpis_freshness
+        type: freshness
+        timestamp_column: loaded_at
+        deadline_hours: 32
+        severity: critical
+        description: The mart partition is due by 08:00 the next morning.
+
+  - name: hubs
+    business_date_column: onboarded_date
+    key: hub_id
+    checks:
+      - id: hubs_hub_id_unique
+        type: uniqueness
+        columns: [hub_id]
+        scope: table
+        severity: critical
+        description: Hub ids are unique across the registry.
+      - id: hubs_rfc_validity
+        type: validity
+        column: rfc
+        format: rfc_moral
+        scope: table
+        max_invalid_rate: 0.0
+        severity: high
+        description: Hub RFC uses the persona moral shape. Not a SAT checksum.
+      - id: hubs_branch_code_completeness
+        type: completeness
+        column: branch_code
+        scope: table
+        max_null_rate: 0.0
+        severity: high
+        description: Every hub has a branch code.
+      - id: hubs_city_completeness
+        type: completeness
+        column: city
+        scope: table
+        max_null_rate: 0.0
+        severity: low
+        description: Every hub has a city.

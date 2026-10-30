@@ -1,0 +1,427 @@
+{
+  "run_id": "d6662fa52701431f93bc95f028608f8f",
+  "run_ts": "2026-10-30 19:22:30",
+  "as_of": "2026-10-15",
+  "evaluation": {
+    "defects_total": 20,
+    "defects_caught": 20,
+    "fails_total": 20,
+    "true_positives": 20,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "row_level_applicable": 20,
+    "row_level_caught": 20,
+    "row_level_recall": 1.0,
+    "missed": [],
+    "unexpected": []
+  },
+  "days": [
+    {
+      "business_date": "2026-09-01",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-02",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-03",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-04",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-05",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-06",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-07",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-08",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-09",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-10",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-11",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-12",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-13",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-14",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 28,
+      "checks_skipped": 6
+    },
+    {
+      "business_date": "2026-09-15",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-16",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-17",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-18",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-19",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-20",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-21",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-22",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-23",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-24",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-25",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-26",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-27",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-28",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-29",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-09-30",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-01",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-02",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-03",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-04",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-05",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-06",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-07",
+      "score": 90.4762,
+      "status": "fail",
+      "checks_failed": 2,
+      "critical_failed": 2,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-08",
+      "score": 93.3333,
+      "status": "fail",
+      "checks_failed": 2,
+      "critical_failed": 1,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-09",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-10",
+      "score": 79.0476,
+      "status": "fail",
+      "checks_failed": 8,
+      "critical_failed": 1,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-11",
+      "score": 80.9524,
+      "status": "fail",
+      "checks_failed": 4,
+      "critical_failed": 4,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-12",
+      "score": 92.381,
+      "status": "fail",
+      "checks_failed": 2,
+      "critical_failed": 1,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-13",
+      "score": 98.0952,
+      "status": "pass",
+      "checks_failed": 1,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-14",
+      "score": 100.0,
+      "status": "pass",
+      "checks_failed": 0,
+      "critical_failed": 0,
+      "checks_total": 34,
+      "checks_skipped": 0
+    },
+    {
+      "business_date": "2026-10-15",
+      "score": 95.9016,
+      "status": "fail",
+      "checks_failed": 1,
+      "critical_failed": 1,
+      "checks_total": 39,
+      "checks_skipped": 0
+    }
+  ]
+}
