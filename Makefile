@@ -19,6 +19,12 @@ report: run
 dashboard: run
 	streamlit run dashboard/app.py
 
+site-data:
+	python scripts/export_browser_warehouse.py
+
+site:
+	npm run build
+
 test:
 	pytest
 
