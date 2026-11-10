@@ -11,3 +11,6 @@ dist/
 *.duckdb.wal
 .streamlit/secrets.toml
 .DS_Store
+node_modules/
+site/vendor/
+site/assets/

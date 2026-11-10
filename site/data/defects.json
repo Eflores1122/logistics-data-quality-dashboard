@@ -1,0 +1,186 @@
+{
+  "description": "Labeled defects injected into the synthetic warehouse.",
+  "seed": 42,
+  "defects": [
+    {
+      "id": "DEF-SHIPMENT-DUP",
+      "business_date": "2026-10-07",
+      "table": "shipments",
+      "check_id": "shipments_shipment_id_unique",
+      "defect_type": "uniqueness",
+      "description": "Five shipment ids were cloned, so each of those keys appears twice.",
+      "min_failed_rows": 10
+    },
+    {
+      "id": "DEF-GOLDEN-SHIPMENT-DUP",
+      "business_date": "2026-10-07",
+      "table": "daily_route_kpis",
+      "check_id": "kpis_golden_reconciliation",
+      "defect_type": "golden_reconciliation",
+      "description": "Cloned shipments move the published daily count and weight off the golden file.",
+      "min_failed_rows": 1
+    },
+    {
+      "id": "DEF-WEIGHT-DRIFT",
+      "business_date": "2026-10-08",
+      "table": "shipments",
+      "check_id": "shipments_weight_drift",
+      "defect_type": "distribution_drift",
+      "description": "Every shipment that day was rewritten to a 1.00-9.50 gram micro weight.",
+      "min_failed_rows": 1000
+    },
+    {
+      "id": "DEF-GOLDEN-WEIGHT",
+      "business_date": "2026-10-08",
+      "table": "daily_route_kpis",
+      "check_id": "kpis_golden_reconciliation",
+      "defect_type": "golden_reconciliation",
+      "description": "The micro-weight day keeps the row count and breaks the golden weight.",
+      "min_failed_rows": 1
+    },
+    {
+      "id": "DEF-EMAIL-NULL",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_email_completeness",
+      "defect_type": "completeness",
+      "description": "25 new customers were loaded with a null email.",
+      "min_failed_rows": 25
+    },
+    {
+      "id": "DEF-RFC-FORMAT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_rfc_validity",
+      "defect_type": "validity",
+      "description": "12 new customers have an RFC that is not a persona fisica format.",
+      "min_failed_rows": 12
+    },
+    {
+      "id": "DEF-CURP-FORMAT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_curp_validity",
+      "defect_type": "validity",
+      "description": "10 new customers have a CURP that fails the structural pattern.",
+      "min_failed_rows": 10
+    },
+    {
+      "id": "DEF-EMAIL-FORMAT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_email_validity",
+      "defect_type": "validity",
+      "description": "8 new customers have a non-null email that is not an email address.",
+      "min_failed_rows": 8
+    },
+    {
+      "id": "DEF-PHONE-FORMAT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_phone_validity",
+      "defect_type": "validity",
+      "description": "8 new customers have a phone number that is not +52 plus 10 digits.",
+      "min_failed_rows": 8
+    },
+    {
+      "id": "DEF-SEGMENT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_segment_values",
+      "defect_type": "accepted_values",
+      "description": "4 new customers were tagged with a segment outside the accepted list.",
+      "min_failed_rows": 4
+    },
+    {
+      "id": "DEF-SEGMENT-DRIFT",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_segment_drift",
+      "defect_type": "distribution_drift",
+      "description": "The unknown segment is a new category, so the signup mix drifts from the calibration window.",
+      "min_failed_rows": 86
+    },
+    {
+      "id": "DEF-CUST-DUP",
+      "business_date": "2026-10-10",
+      "table": "customers",
+      "check_id": "customers_customer_id_unique",
+      "defect_type": "uniqueness",
+      "description": "6 customer ids were inserted twice on the same signup date.",
+      "min_failed_rows": 12
+    },
+    {
+      "id": "DEF-SHIPMENT-ORPHAN-CUSTOMER",
+      "business_date": "2026-10-11",
+      "table": "shipments",
+      "check_id": "shipments_customer_fk",
+      "defect_type": "referential_integrity",
+      "description": "15 shipments reference a customer id that was never registered.",
+      "min_failed_rows": 15
+    },
+    {
+      "id": "DEF-SHIPMENT-ORPHAN-HUB",
+      "business_date": "2026-10-11",
+      "table": "shipments",
+      "check_id": "shipments_hub_fk",
+      "defect_type": "referential_integrity",
+      "description": "7 shipments reference hub id HUB-MISSING.",
+      "min_failed_rows": 7
+    },
+    {
+      "id": "DEF-SCAN-ORPHAN",
+      "business_date": "2026-10-11",
+      "table": "tracking_scans",
+      "check_id": "scans_customer_fk",
+      "defect_type": "referential_integrity",
+      "description": "5 tracking scans reference a customer id that does not exist.",
+      "min_failed_rows": 5
+    },
+    {
+      "id": "DEF-GOLDEN-ORPHAN",
+      "business_date": "2026-10-11",
+      "table": "daily_route_kpis",
+      "check_id": "kpis_golden_reconciliation",
+      "defect_type": "golden_reconciliation",
+      "description": "The extra orphan shipments move the published daily total off the golden file.",
+      "min_failed_rows": 1
+    },
+    {
+      "id": "DEF-VOLUME",
+      "business_date": "2026-10-12",
+      "table": "shipments",
+      "check_id": "shipments_volume_anomaly",
+      "defect_type": "volume_anomaly",
+      "description": "The shipment file for the day kept 200 of the usual 1,000 shipments.",
+      "min_failed_rows": 800
+    },
+    {
+      "id": "DEF-GOLDEN-VOLUME",
+      "business_date": "2026-10-12",
+      "table": "daily_route_kpis",
+      "check_id": "kpis_golden_reconciliation",
+      "defect_type": "golden_reconciliation",
+      "description": "The thinned shipment file breaks both the golden count and the golden weight.",
+      "min_failed_rows": 1
+    },
+    {
+      "id": "DEF-CHANNEL-DRIFT",
+      "business_date": "2026-10-13",
+      "table": "shipments",
+      "check_id": "shipments_channel_drift",
+      "defect_type": "distribution_drift",
+      "description": "Channel mix was rewritten to 80% counter against a 5% counter baseline.",
+      "min_failed_rows": 1000
+    },
+    {
+      "id": "DEF-SCAN-FRESHNESS",
+      "business_date": "2026-10-15",
+      "table": "tracking_scans",
+      "check_id": "scans_freshness",
+      "defect_type": "freshness",
+      "description": "The tracking-scan partition for the as-of date was stamped 12 hours after its deadline.",
+      "min_failed_rows": 80
+    }
+  ]
+}

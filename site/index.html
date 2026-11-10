@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RutaNorte calidad de datos</title>
+    <meta
+      name="description"
+      content="Sala de control de RutaNorte. El navegador corre los checks de calidad sobre el almacén sintético de semilla 42."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230C5C58'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#trend">Saltar a la tendencia</a>
+    <header class="wrap bar">
+      <div>
+        <p class="mark">RutaNorte</p>
+        <p class="mark-sub">calidad de datos</p>
+      </div>
+      <div class="bar-links">
+        <div id="lang" role="group" aria-label="Idioma"></div>
+        <a data-profile href="https://github.com/Eflores1122">GitHub</a>
+        <a data-repo href="https://github.com/Eflores1122/logistics-data-quality-dashboard">Repositorio</a>
+      </div>
+    </header>
+    <main class="wrap">
+      <h1 id="title">Sala de control</h1>
+      <p id="lede">Cargando DuckDB y el almacén sintético de semilla 42.</p>
+      <p id="progress-row">
+        <progress id="progress" max="100" value="0"></progress>
+        <span id="progress-label">Preparando DuckDB en este navegador.</span>
+      </p>
+      <figure id="trend" hidden></figure>
+      <form id="filters" hidden></form>
+      <div id="tabs" hidden></div>
+      <div id="panels" hidden></div>
+      <section id="rules"></section>
+    </main>
+    <footer class="wrap">
+      <p data-synthetic>Datos sintéticos. RutaNorte no es una empresa real.</p>
+      <p data-local>La sala local con Streamlit sigue en dashboard/app.py.</p>
+      <p data-colophon>
+        IBM Plex Sans, de IBM para interfaces técnicas densas. Las cifras tabulares alinean puntajes y conteos. IBM Plex Mono solo en identificadores, SQL y muestras. Acento #0C5C58, tinta de un sello de ruta, un solo color. #7A2424 se reserva para la palabra falla.
+      </p>
+      <p class="foot-links">
+        <a data-profile-foot href="https://github.com/Eflores1122">GitHub</a>
+        <a data-repo-foot href="https://github.com/Eflores1122/logistics-data-quality-dashboard">Repositorio</a>
+      </p>
+    </footer>
+    <noscript>Esta sala ejecuta los checks con JavaScript y DuckDB-WASM.</noscript>
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>

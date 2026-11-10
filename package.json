@@ -1,0 +1,13 @@
+{
+  "name": "rutanorte-dq-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build_site.mjs",
+    "verify": "node scripts/verify_browser_engine.mjs"
+  },
+  "devDependencies": {
+    "@duckdb/duckdb-wasm": "^1.30.0",
+    "esbuild": "^0.25.11"
+  }
+}

@@ -1,3 +1,5 @@
+Public site: https://eflores1122.github.io/logistics-data-quality-dashboard/
+
 # RutaNorte data quality
 
 Reference implementation by **Edgar Flores**, Data & AI Engineer (Mexico).
@@ -5,6 +7,8 @@ Reference implementation by **Edgar Flores**, Data & AI Engineer (Mexico).
 This repository is a portfolio reference. **RutaNorte Paqueteria is a fictitious Mexican parcel and logistics company** created for this project. The warehouse, people, couriers, hubs, shipments, and tracking scans are **synthetic**. Nothing here describes an employer, a client, or a production system.
 
 The project is a local data-quality framework: declarative YAML checks, a DuckDB warehouse with deliberate defects, a severity model with daily SLA scores, a detection report (precision and recall), a CLI export, and a Streamlit control room.
+
+The public site runs those same 39 checks in the browser. DuckDB-WASM loads the seed-42 parquet export under `site/data/` and `site/js/engine.js` scores every business date. Filters, the daily trend, the incident catalog, lineage, and a read-only SQL box all use that run. The screenshots below are the local Streamlit room, not the public site.
 
 ![RutaNorte data-quality dashboard](docs/dashboard.png)
 
@@ -173,7 +177,13 @@ rutanorte-dq evaluate
 rutanorte-dq report --format markdown --output reports/dq_report.md
 rutanorte-dq report --format html --output reports/dq_report.html
 streamlit run dashboard/app.py
+
+npm ci
+npm run build
+python -m http.server 4173 --directory site
 ```
+
+`npm run build` copies DuckDB-WASM into `site/vendor/` and bundles `site/js/app.js`. Open http://127.0.0.1:4173/. Refresh the parquet export, after a generator change, with `python scripts/export_browser_warehouse.py`. `npm run verify` runs the browser engine on that export and compares it with `site/data/reference_results.json`.
 
 `generate` writes:
 
@@ -201,6 +211,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs that sequence on Python 3.12. T
 checks/rutanorte_daily.yaml          Declarative suite, lineage, SLA
 src/rutanorte_dq/                    Generator, engine, scoring, CLI, reports
 dashboard/app.py                     Streamlit control room
+site/                                Static control room for GitHub Pages
 data/golden/                         Operations golden file
 data/ground_truth/                   Labeled defects
 reports/                             Sample report from a real run

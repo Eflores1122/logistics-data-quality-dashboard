@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "window_start": "2026-09-01",
+  "window_end": "2026-10-15",
+  "days": 45,
+  "counts": {
+    "hubs": 120,
+    "customers": 3606,
+    "tracking_scans": 3605,
+    "shipments": 44220,
+    "daily_route_kpis": 45
+  },
+  "checks": 39,
+  "defects": 20,
+  "suite": "checks/rutanorte_daily.yaml",
+  "generator": "rutanorte-dq generate --seed 42",
+  "engine": "src/rutanorte_dq/engine.py",
+  "browser_engine": "site/js/engine.js"
+}
