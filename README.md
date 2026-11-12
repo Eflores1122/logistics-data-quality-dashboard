@@ -1,14 +1,29 @@
-Public site: https://eflores1122.github.io/logistics-data-quality-dashboard/
-
 # RutaNorte data quality
+
+Score each business day of a synthetic Mexican parcel warehouse, and measure whether the YAML checks catch the defects that were injected.
+
+**Problem.** A published route KPI can look healthy while customer identifiers, shipment keys, weights, or scan freshness are already wrong. This repository is a local control room for that question: which days pass an SLA, which checks failed, and did those failures match the labeled defects?
 
 Reference implementation by **Edgar Flores**, Data & AI Engineer (Mexico).
 
-This repository is a portfolio reference. **RutaNorte Paqueteria is a fictitious Mexican parcel and logistics company** created for this project. The warehouse, people, couriers, hubs, shipments, and tracking scans are **synthetic**. Nothing here describes an employer, a client, or a production system.
+**RutaNorte Paqueteria is a fictitious Mexican parcel and logistics company** created for this project. The warehouse, people, couriers, hubs, shipments, and tracking scans are **synthetic**. Nothing here describes an employer, a client, or a production system.
 
 The project is a local data-quality framework: declarative YAML checks, a DuckDB warehouse with deliberate defects, a severity model with daily SLA scores, a detection report (precision and recall), a CLI export, and a Streamlit control room.
 
-The public site runs those same 39 checks in the browser. DuckDB-WASM loads the seed-42 parquet export under `site/data/` and `site/js/engine.js` scores every business date. Filters, the daily trend, the incident catalog, lineage, and a read-only SQL box all use that run. The screenshots below are the local Streamlit room, not the public site.
+## Tech stack
+
+| Piece | Role |
+| --- | --- |
+| Python 3.11+ | Generator, check engine, and CLI |
+| DuckDB | Local warehouse and append-only check history |
+| YAML | Declarative suite in `checks/rutanorte_daily.yaml` |
+| Streamlit and Plotly | Local control room |
+| DuckDB-WASM | The same checks on the static GitHub Pages site |
+| pytest and ruff | Tests and lint, both run in GitHub Actions |
+
+Public site: https://eflores1122.github.io/logistics-data-quality-dashboard/
+
+The public site runs the same checks in the browser. DuckDB-WASM loads the seed-42 parquet export under `site/data/` and `site/js/engine.js` scores every business date. Filters, the daily trend, the incident catalog, lineage, and a read-only SQL box all use that run. The screenshots below are the local Streamlit room, not the public site.
 
 ![RutaNorte data-quality dashboard](docs/dashboard.png)
 
@@ -39,7 +54,9 @@ Seed `42`, business dates **2026-09-01 through 2026-10-15** (45 days). Reproduce
 | **Recall** | **1.000** |
 | Row-level recall | 20 / 20 (1.000) |
 
-A clean day such as 2026-09-20 scores **100.00** and passes the SLA. Six days fail the SLA. 2026-10-13 still **passes** the SLA at **98.10** while one medium-severity drift check fails: the check is caught, and the weighted score stays above 95 with no critical failure. 2026-10-15 scores **95.90**, above the pass line, and **fails** the SLA because tracking-scan freshness is critical (the partition arrived 12.00 hours late).
+A clean day such as 2026-09-20 scores **100.00** and passes the SLA. 6 days fail the SLA. 2026-10-13 still **passes** the SLA at **98.10** while one medium-severity drift check fails: the check is caught, and the weighted score stays above 95 with no critical failure. 2026-10-15 scores **95.90**, above the pass line, and **fails** the SLA because tracking-scan freshness is critical (the partition arrived 12.00 hours late).
+
+The counts, precision, recall, and incident-day scores in this section are the seed-42 evaluation. `tests/test_reference_suite.py` rebuilds the warehouse and requires this text to match that run, including precision and recall printed to three decimals. They are the program output.
 
 | Business date | Score | SLA | Failed checks | What was injected |
 | --- | ---: | --- | ---: | --- |
@@ -53,6 +70,26 @@ A clean day such as 2026-09-20 scores **100.00** and passes the SLA. Six days fa
 | 2026-10-15 | 95.90 | fail | 1 | Tracking-scan `loaded_at` is 2026-10-16 20:00 against a 08:00 deadline. |
 
 Row-level recall means each catalog entry with a minimum offending-row count was met. Examples: 25 null emails, 12 bad RFCs, 10 duplicate shipment rows, 15 customer orphans, an 800-row gap versus the trailing median.
+
+## Sample output
+
+`rutanorte-dq evaluate` prints the block below for seed 42. The run id and timestamp change on every execution. The detection counts do not. The same test compares these lines with a fresh run.
+
+```text
+Window: 2026-09-01 to 2026-10-15
+Injected defects: 20; caught: 20; missed: 0; unexpected fails: 0
+Precision: 1.000
+Recall: 1.000
+Row-level recall: 20/20 (1.000)
+  2026-09-20  score=100.00  sla=pass  failed=0  critical=0
+  2026-10-07  score=90.48  sla=fail  failed=2  critical=2
+  2026-10-08  score=93.33  sla=fail  failed=2  critical=1
+  2026-10-10  score=79.05  sla=fail  failed=8  critical=1
+  2026-10-11  score=80.95  sla=fail  failed=4  critical=4
+  2026-10-12  score=92.38  sla=fail  failed=2  critical=1
+  2026-10-13  score=98.10  sla=pass  failed=1  critical=0
+  2026-10-15  score=95.90  sla=fail  failed=1  critical=1
+```
 
 ## Architecture
 
@@ -203,7 +240,7 @@ ruff format --check .
 pytest
 ```
 
-GitHub Actions (`.github/workflows/ci.yml`) runs that sequence on Python 3.12. The workflow has no secrets and does not call an external warehouse. The reference test rebuilds the 45-day warehouse in a temporary database and locks the detection result plus the incident-day scores.
+GitHub Actions (`.github/workflows/ci.yml`) runs that sequence on Python 3.12. A second job runs `npm run verify` so the browser engine matches the Python reference. The workflow has no secrets and does not call an external warehouse. The reference test rebuilds the 45-day warehouse in a temporary database and compares the detection result, the incident-day scores, the committed evaluation file, and the figures in this README with that run.
 
 ## Layout
 
@@ -218,6 +255,16 @@ reports/                             Sample report from a real run
 docs/dashboard.png                   Screenshot of the running dashboard
 tests/                               Unit tests and the reference run
 ```
+
+## Limitations
+
+- Precision and recall are the detection result on this labeled synthetic catalog for seed 42. They describe whether the checks fired on defects the generator inserted.
+- RFC and CURP checks match the published shape and a real calendar date. They stop at that structural test: they do not apply a SAT or RENAPO checksum, and nothing is sent to an external service.
+- DuckDB runs every check locally. The SQL uses grouped metrics, format tests, and anti-joins. This repository does not connect to BigQuery and does not use dbt.
+- The browser control room is a port of the same checks. `npm run verify` compares that port with the Python reference output.
+- Volume and drift checks stay skipped until their windows fill, so the earliest business dates are only partly scored.
+- Timestamps are naive warehouse-local times for America/Mexico_City, which does not observe daylight saving.
+- The published figures cover one 45-day window. A different seed is not part of the tables above.
 
 ## License
 

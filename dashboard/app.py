@@ -131,7 +131,7 @@ def main() -> None:
                     "message",
                 ]
             ].sort_values(["business_date", "severity", "check_id"])
-            st.dataframe(show, use_container_width=True, hide_index=True, height=320)
+            st.dataframe(show, width="stretch", hide_index=True, height=320)
     with right:
         st.subheader("Table lineage")
         st.caption(lineage_note)
@@ -238,7 +238,7 @@ def _trend(day: pd.DataFrame, pass_score: float) -> None:
         showlegend=False,
         font={"color": INK},
     )
-    st.plotly_chart(figure, use_container_width=True)
+    st.plotly_chart(figure, width="stretch")
 
 
 def _heatmap(scores: pd.DataFrame) -> None:
@@ -264,7 +264,7 @@ def _heatmap(scores: pd.DataFrame) -> None:
         paper_bgcolor="rgba(0,0,0,0)",
         font={"color": INK},
     )
-    st.plotly_chart(figure, use_container_width=True)
+    st.plotly_chart(figure, width="stretch")
     st.caption("Empty cells are tables scored only on the as-of date, such as the hub registry.")
 
 
@@ -357,7 +357,7 @@ def _evidence(failing: pd.DataFrame) -> None:
     if not samples:
         st.caption("This failure did not store sample rows.")
         return
-    st.dataframe(pd.DataFrame(samples), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(samples), width="stretch", hide_index=True)
 
 
 if __name__ == "__main__":
